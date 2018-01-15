@@ -1,6 +1,23 @@
 function main {
-    # Format is like: 'traff-12-2017=5289:16351 6949:16870 ... 35834:7740 [269745:411982]'
-    $usage = Get-Content -Path '.\traffdata.bak' -Encoding UTF8 | % {
+
+    # Get traffic data from server...
+    $url = 'https://10.0.0.1/traffdata.bak'
+    $cred = (Get-Credential -Message $url -UserName 'john' -ea Stop).GetNetworkCredential()
+    $global:LASTEXITCODE = 0
+    $source = curl.exe --url $url --user ($cred.Username + ':' + $cred.Password) --insecure --fail --silent --show-error *>&1
+    if ($LASTEXITCODE -ne 0) {
+        if (!$source) {
+            $source = "Failed to retrieve traffic data from server ($LASTEXITCODE)."
+        }
+        Write-Error "$source"
+        return
+    }
+
+    #$source = Get-Content -Path '.\traffdata.bak' -Encoding UTF8
+
+    # Parse traffic data...
+    #  Source looks like: "traff-01-2018=5178:8369 4054:8176 ... 10743:17114 [102947:173392]"
+    $usage = $source | % {
         if ($_ -match '^traff-(?<month>\d+)-(?<year>\d+)=(?<usage>.+) \[(?<totalin>\d+):(?<totalout>\d+)\]') {
             $start = (Get-Date -Year $Matches.year -Month $Matches.month -Day 1).Date
             foreach ($v in $Matches.usage -split ' ') {
