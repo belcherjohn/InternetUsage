@@ -1,6 +1,18 @@
+<#
+.SYNOPSIS
+    Short description
+.DESCRIPTION
+    Long description
+.EXAMPLE
+    PS C:\> .\AnalyzeUsage.ps1 -Credential ([pscredential]::new('john', (ConvertTo-SecureString -String '...' -AsPlainText -Force))) -Summary
+    View summary of usage.
+.EXAMPLE
+    PS C:\> .\AnalyzeUsage.ps1 -Credential ([pscredential]::new('john', (ConvertTo-SecureString -String '...' -AsPlainText -Force))) -Csv -NoTypeInformation -NoHeader | Set-Clipboard
+    Copy data to clipboard, ready to paste into Excel.
+#>
 [CmdletBinding(DefaultParameterSetName = 'Data')]
 param (
-    [System.Uri]$TrafficDataUrl = 'https://10.0.0.1/traffdata.bak',
+    [System.Uri]$TrafficDataUrl = 'http://r7000.dingletech.com/traffdata.bak',
     [System.Management.Automation.PSCredential]$Credential,
     [string]$OutTrafficDataFile,
 
