@@ -100,7 +100,7 @@ function main {
 
     $source = getTrafficData
     if ($OutTrafficDataFile) {
-        $source | Out-File -Path $OutTrafficDataFile -Encoding UTF8
+        $source | Out-File -LiteralPath $OutTrafficDataFile -Encoding UTF8
     }
 
     # discard first and last (assumes they are partial days)
