@@ -9,6 +9,9 @@
 .EXAMPLE
     PS C:\> .\AnalyzeUsage.ps1 -Credential ([pscredential]::new('john', (ConvertTo-SecureString -String '...' -AsPlainText -Force))) -Csv -NoTypeInformation -NoHeader | Set-Clipboard
     Copy data to clipboard, ready to paste into Excel.
+.EXAMPLE
+    PS C:\> .\AnalyzeUsage.ps1 -Credential ([pscredential]::new('john', (ConvertTo-SecureString -String '...' -AsPlainText -Force))) -OutTrafficDataFile .\traffdata.bak
+    Write data .\traffdata.bak.
 #>
 [CmdletBinding(DefaultParameterSetName = 'Data')]
 param (
